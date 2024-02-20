@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Foundation",
+    "description": "Evens skin tone",
+    "products": [
+      {
+        "name": "Maybelline Fit Me Matte + Poreless Foundation",
+        "description": "Various shades",
+        "price": 8.0,
+        "quantity": 20
+      },
+      {
+        "name": "Fenty Beauty Pro Filt'r Soft Matte Longwear Foundation",
+        "description": "Wide shade range",
+        "price": 36.0,
+        "quantity": 15
+      }
+    ]
+  },
+  {
+    "name": "Eyeshadow Palette",
+    "description": "Variety of eye colors",
+    "products": [
+      {
+        "name": "Urban Decay Naked Eyeshadow Palette",
+        "description": "12 shades",
+        "price": 54.0,
+        "quantity": 10
+      },
+      {
+        "name": "ColourPop Yes, Please! Pressed Powder Eyeshadow Palette",
+        "description": "Warm tones",
+        "price": 16.0,
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "name": "Mascara",
+    "description": "Lengthens lashes",
+    "products": [
+      {
+        "name": "L'Oréal Paris Voluminous Lash Paradise Mascara",
+        "description": "Black",
+        "price": 9.0,
+        "quantity": 25
+      },
+      {
+        "name": "Benefit Cosmetics They're Real! Lengthening Mascara",
+        "description": "Jet black",
+        "price": 25.0,
+        "quantity": 18
+      }
+    ]
+  }
+]
