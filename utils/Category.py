@@ -1,11 +1,16 @@
 class Category:
-    """Класс категории."""
-    total_categories = 0  # атрибут для отслеживания общего количества категорий
-    unique_products = 0  # атрибут для отслеживания общего количества уникальных продуктов
+    """Class representing a category of products."""
 
-    def __init__(self, name, description, products):
-        self.name = name  # название категории
-        self.description = description  # описание категории
-        self.products = products  # товары в категории
-        Category.total_categories += 1  # увеличиваем общее количество категорий
-        Category.unique_products += len(products)  # увеличиваем общее количество уникальных продуктов
+    def __init__(self, name, description):
+        self.name = name
+        self.description = description
+        self.__products = []  # Приватный атрибут для хранения товаров
+
+    def add_product(self, product):
+        """Метод для добавления товара в категорию."""
+        self.__products.append(product)
+
+    @property
+    def products(self):
+        """Геттер для получения списка товаров."""
+        return self.__products
