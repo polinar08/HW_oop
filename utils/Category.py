@@ -15,6 +15,11 @@ class Category:
         self.__products.append(product)
 
     @property
+    def products(self):
+        """Геттер для получения списка товаров в категории."""
+        return self.__products
+
+    @property
     def formatted_products(self):
         """Геттер для вывода списка товаров в формате."""
         formatted_list = []

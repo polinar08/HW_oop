@@ -4,7 +4,7 @@ import json
 
 
 def load_data():
-    # Загружаем данные из файла products.json
+    # Загрузка данных из файла "products.json"
     with open("products.json", "r") as file:
         data = json.load(file)
     return data
@@ -12,11 +12,15 @@ def load_data():
 
 def main():
     data = load_data()  # Загрузка данных
-    categories = []
+    categories = []  # Создание списка категорий
 
     # Обработка данных и создание экземпляров классов Category и Product
     for category_data in data:
-        products = []
+        category = Category(category_data["name"], category_data[
+            "description"])  # Создание экземпляра класса Category без передачи списка товаров
+        categories.append(category)  # Добавление категории в список категорий
+
+        # Добавление товаров в категорию
         for product_data in category_data["products"]:
             product = Product(
                 product_data["name"],
@@ -24,26 +28,15 @@ def main():
                 product_data["price"],
                 product_data["quantity"]
             )
-            products.append(product)
-
-        category = Category(
-            category_data["name"],
-            category_data["description"],
-            products
-        )
-        categories.append(category)
+            category.add_product(product)  # Добавление товара в категорию с помощью метода add_product()
 
     # Вывод информации о категориях и продуктах
     for category in categories:
         print(f"Категория: {category.name}")
         print(f"Описание: {category.description}")
         print("Продукты:")
-        for product in category.products:
-            print(f"\tПродукт: {product.name}")
-            print(f"\tОписание: {product.description}")
-            print(f"\tЦена: {product.price}")
-            print(f"\tКоличество: {product.quantity_available}")
-            print()
+        for product in category.formatted_products:  # Используем геттер formatted_products для вывода товаров
+            print(product)
         print()
 
 

@@ -1,5 +1,5 @@
 class Product:
-    """Class representing a product."""
+    """Класс представляющий продукт."""
 
     def __init__(self, name, description, price, quantity_available):
         self.name = name  # название продукта
@@ -25,3 +25,8 @@ class Product:
             self.__price = value
         else:
             print("Цена введена некорректно.")
+
+    @classmethod
+    def create(cls, name, description, price, quantity_available):
+        """Метод для создания нового товара."""
+        return cls(name, description, price, quantity_available)
