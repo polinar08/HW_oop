@@ -30,3 +30,7 @@ class Product:
     def create(cls, name, description, price, quantity_available):
         """Метод для создания нового товара."""
         return cls(name, description, price, quantity_available)
+
+    def __str__(self):
+        """Метод для строкового представления продукта."""
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity_available} шт."

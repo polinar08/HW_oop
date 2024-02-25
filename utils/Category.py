@@ -2,7 +2,7 @@ class Category:
     """Класс категории."""
 
     total_categories = 0  # атрибут для отслеживания общего количества категорий
-    unique_products = 0  # атрибут для отслеживания общего количества уникальных продуктов
+    total_products = 0  # атрибут для отслеживания общего количества продуктов
 
     def __init__(self, name, description):
         self.name = name  # название категории
@@ -13,16 +13,12 @@ class Category:
     def add_product(self, product):
         """Метод для добавления товара в категорию."""
         self.__products.append(product)
+        Category.total_products += 1  # увеличиваем общее количество продуктов
 
-    @property
-    def products(self):
-        """Геттер для получения списка товаров в категории."""
-        return self.__products
+    def __len__(self):
+        """Метод для получения количества продуктов в категории."""
+        return len(self.__products)
 
-    @property
-    def formatted_products(self):
-        """Геттер для вывода списка товаров в формате."""
-        formatted_list = []
-        for product in self.__products:
-            formatted_list.append(f"{product.name}, {product.price} руб. Остаток: {product.quantity_available} шт.")
-        return formatted_list
+    def __str__(self):
+        """Метод для строкового представления категории."""
+        return f"{self.name}, количество продуктов: {len(self)} шт."
