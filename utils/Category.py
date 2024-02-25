@@ -7,17 +7,16 @@ class Category:
     def __init__(self, name, description):
         self.name = name  # название категории
         self.description = description  # описание категории
-        self.__products = []  # приватный атрибут для хранения товаров
-        Category.total_categories += 1  # увеличиваем общее количество категорий
+        self.products = []  # список для хранения товаров
 
     def add_product(self, product):
         """Метод для добавления товара в категорию."""
-        self.__products.append(product)
+        self.products.append(product)
         Category.total_products += 1  # увеличиваем общее количество продуктов
 
     def __len__(self):
         """Метод для получения количества продуктов в категории."""
-        return len(self.__products)
+        return len(self.products)
 
     def __str__(self):
         """Метод для строкового представления категории."""

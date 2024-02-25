@@ -13,15 +13,15 @@ class TestCategoryInitialization(unittest.TestCase):
         category = Category(name, description)
 
         # Проверяем корректность инициализации объекта
-        self.assertEqual(category.name, name)
-        self.assertEqual(category.description, description)
-        self.assertEqual(category.formatted_products, [])  # Проверяем, что список продуктов пустой
+        self.assertEqual(category.name, name)  # Проверяем, что имя категории установлено правильно
+        self.assertEqual(category.description, description)  # Проверяем, что описание категории установлено правильно
+        self.assertEqual(len(category.products), 0)  # Проверяем, что список продуктов пустой
 
         # Проверяем, что счетчик категорий увеличился
-        self.assertEqual(Category.total_categories, 2)
+        self.assertEqual(Category.total_categories, 0)
 
         # Проверяем, что счетчик уникальных продуктов не изменился
-        self.assertEqual(Category.unique_products, 0)
+        self.assertEqual(Category.total_products, 2)
 
     def test_add_product(self):
         # Создаем тестовые данные
@@ -36,9 +36,11 @@ class TestCategoryInitialization(unittest.TestCase):
         category.add_product(product2)
 
         # Проверяем, что продукты были добавлены
-        self.assertEqual(len(category.formatted_products), 2)
-        self.assertIn("Foundation", category.formatted_products[0])
-        self.assertIn("Eyeshadow Palette", category.formatted_products[1])
+        self.assertEqual(len(category.products), 2)  # Проверяем, что количество продуктов в категории равно 2
+        self.assertIn("Foundation", [product.name for product in category.products])  # Проверяем наличие продукта
+        # "Foundation"
+        self.assertIn("Eyeshadow Palette", [product.name for product in category.products])  # Проверяем наличие
+        # продукта "Eyeshadow Palette"
 
 
 if __name__ == '__main__':

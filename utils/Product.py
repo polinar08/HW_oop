@@ -4,7 +4,7 @@ class Product:
     def __init__(self, name, description, price, quantity_available):
         self.name = name  # название продукта
         self.description = description  # описание продукта
-        self.__price = price  # цена продукта (приватный атрибут)
+        self.price = price  # цена продукта
         self.quantity_available = quantity_available  # количество товара в наличии
 
     @property
@@ -16,20 +16,20 @@ class Product:
     def price(self, value):
         """Сеттер для установки цены товара."""
         if value > 0:
-            # Проверяем, если цена понижается, запрашиваем подтверждение пользователя
-            if value < self.__price:
-                confirm = input("Вы уверены, что хотите понизить цену? (y/n): ")
-                if confirm.lower() != 'y':
-                    print("Действие отменено.")
-                    return
             self.__price = value
         else:
             print("Цена введена некорректно.")
 
-    @classmethod
-    def create(cls, name, description, price, quantity_available):
-        """Метод для создания нового товара."""
-        return cls(name, description, price, quantity_available)
+    def __add__(self, other):
+        """Метод для операции сложения двух продуктов."""
+        if isinstance(other, Product):
+            total_price_self = self.price * self.quantity_available
+            total_price_other = other.price * other.quantity_available
+            total_price = total_price_self + total_price_other
+            total_quantity = self.quantity_available + other.quantity_available
+            return total_price / total_quantity
+        else:
+            raise ValueError("Нельзя сложить продукт с объектом другого типа.")
 
     def __str__(self):
         """Метод для строкового представления продукта."""
