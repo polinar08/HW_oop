@@ -25,9 +25,7 @@ class Product:
         if isinstance(other, Product):
             total_price_self = self.price * self.quantity_available
             total_price_other = other.price * other.quantity_available
-            total_price = total_price_self + total_price_other
-            total_quantity = self.quantity_available + other.quantity_available
-            return total_price / total_quantity
+            return total_price_self + total_price_other
         else:
             raise ValueError("Нельзя сложить продукт с объектом другого типа.")
 
