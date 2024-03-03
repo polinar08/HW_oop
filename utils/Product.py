@@ -22,7 +22,7 @@ class Product:
 
     def __add__(self, other):
         """Метод для операции сложения двух продуктов."""
-        if isinstance(other, Product):
+        if isinstance(other, self.__class__):
             total_price_self = self.price * self.quantity_available
             total_price_other = other.price * other.quantity_available
             return total_price_self + total_price_other
@@ -44,6 +44,13 @@ class Smartphone(Product):
         self.memory = memory  # объем встроенной памяти
         self.color = color  # цвет
 
+    def __add__(self, other):
+        """Метод для операции сложения двух смартфонов."""
+        if isinstance(other, self.__class__):
+            return super().__add__(other)
+        else:
+            raise ValueError("Нельзя сложить смартфон с объектом другого типа.")
+
 
 class LawnGrass(Product):
     """Подкласс для представления газонной травы."""
@@ -53,3 +60,10 @@ class LawnGrass(Product):
         self.country_of_origin = country_of_origin  # страна-производитель
         self.germination_period = germination_period  # срок прорастания
         self.color = color  # цвет
+
+    def __add__(self, other):
+        """Метод для операции сложения двух газонных трав."""
+        if isinstance(other, self.__class__):
+            return super().__add__(other)
+        else:
+            raise ValueError("Нельзя сложить газонную траву с объектом другого типа.")
