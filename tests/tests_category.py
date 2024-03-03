@@ -42,6 +42,23 @@ class TestCategoryInitialization(unittest.TestCase):
         self.assertIn("Eyeshadow Palette", [product.name for product in category.products])  # Проверяем наличие
         # продукта "Eyeshadow Palette"
 
+    def test_add_product_invalid_type(self):
+        # Создаем тестовые данные
+        name = "Makeup"
+        description = "Beauty products"
+        category = Category(name, description)
+        invalid_product = "Not a Product instance"
+
+        # Проверяем, что добавление недопустимого типа продукта вызывает TypeError
+        with self.assertRaises(TypeError):
+            category.add_product(invalid_product)
+
+        # Проверяем, что список продуктов не изменился
+        self.assertEqual(len(category.products), 0)
+
+        # Проверяем, что счетчик уникальных продуктов не изменился
+        self.assertEqual(Category.total_products, 2)
+
 
 if __name__ == '__main__':
     unittest.main()

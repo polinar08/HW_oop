@@ -1,3 +1,6 @@
+from utils.Product import Product
+
+
 class Category:
     """Класс категории."""
 
@@ -11,8 +14,11 @@ class Category:
 
     def add_product(self, product):
         """Метод для добавления товара в категорию."""
-        self.products.append(product)
-        Category.total_products += 1  # увеличиваем общее количество продуктов
+        if isinstance(product, Product):
+            self.products.append(product)
+            Category.total_products += 1  # увеличиваем общее количество продуктов
+        else:
+            raise TypeError("Можно добавить только продукт или его наследника.")
 
     def __len__(self):
         """Метод для получения количества продуктов в категории."""

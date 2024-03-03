@@ -23,6 +23,7 @@ def main():
         for product_data in category_data["products"]:
             product = Product(
                 product_data["name"],
+                product_data["description"],
                 product_data["price"],
                 product_data["quantity"]
             )
