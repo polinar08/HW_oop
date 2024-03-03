@@ -32,3 +32,24 @@ class Product:
     def __str__(self):
         """Метод для строкового представления продукта."""
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity_available} шт."
+
+
+class Smartphone(Product):
+    """Подкласс для представления смартфонов."""
+
+    def __init__(self, name, description, price, quantity_available, performance, model, memory, color):
+        super().__init__(name, description, price, quantity_available)
+        self.performance = performance  # производительность
+        self.model = model  # модель
+        self.memory = memory  # объем встроенной памяти
+        self.color = color  # цвет
+
+
+class LawnGrass(Product):
+    """Подкласс для представления газонной травы."""
+
+    def __init__(self, name, description, price, quantity_available, country_of_origin, germination_period, color):
+        super().__init__(name, description, price, quantity_available)
+        self.country_of_origin = country_of_origin  # страна-производитель
+        self.germination_period = germination_period  # срок прорастания
+        self.color = color  # цвет
