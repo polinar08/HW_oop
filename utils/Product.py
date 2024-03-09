@@ -1,69 +1,107 @@
-class Product:
-    """Класс представляющий продукт."""
+from abc import ABC, abstractmethod
+
+
+class LoggingMixin:
+    """Миксин для логирования информации о созданных объектах."""
+
+    def __repr__(self):
+        """Метод для вывода информации о созданном объекте."""
+        class_name = self.__class__.__name__  # Получаем название класса
+        attributes = ', '.join([f"{attr}={getattr(self, attr)}" for attr in self.__dict__])  # Получаем атрибуты объекта
+        return f"{class_name}({attributes})"
+
+
+class AbstractProduct(ABC, LoggingMixin):
+    """Абстрактный базовый класс для всех классов продуктов."""
 
     def __init__(self, name, description, price, quantity_available):
-        self.name = name  # название продукта
-        self.description = description  # описание продукта
-        self.price = price  # цена продукта
-        self.quantity_available = quantity_available  # количество товара в наличии
+        """Инициализация абстрактного продукта."""
+        self.name = name
+        self.description = description
+        self.price = price
+        self.quantity_available = quantity_available
 
-    @property
-    def price(self):
-        """Геттер для получения цены товара."""
-        return self.__price
+    @abstractmethod
+    def __add__(self, other):
+        """Метод для сложения двух продуктов."""
+        pass
 
-    @price.setter
-    def price(self, value):
-        """Сеттер для установки цены товара."""
-        if value > 0:
-            self.__price = value
-        else:
-            print("Цена введена некорректно.")
+    @abstractmethod
+    def get_details(self):
+        """Метод для получения деталей продукта."""
+        pass
+
+    @abstractmethod
+    def calculate_total_price(self):
+        """Метод для вычисления общей стоимости продукта."""
+        pass
+
+
+class Product(AbstractProduct):
+    """Класс, представляющий общий продукт."""
 
     def __add__(self, other):
-        """Метод для операции сложения двух продуктов."""
+        """Метод для сложения двух продуктов."""
         if isinstance(other, self.__class__):
-            total_price_self = self.price * self.quantity_available
-            total_price_other = other.price * other.quantity_available
-            return total_price_self + total_price_other
+            return self.calculate_total_price() + other.calculate_total_price()
         else:
             raise ValueError("Нельзя сложить продукт с объектом другого типа.")
 
-    def __str__(self):
-        """Метод для строкового представления продукта."""
-        return f"{self.name}, {self.price} руб. Остаток: {self.quantity_available} шт."
+    def get_details(self):
+        """Метод для получения деталей продукта."""
+        return f"{self.name}, {self.description}, {self.price}, {self.quantity_available}"
+
+    def calculate_total_price(self):
+        """Метод для вычисления общей стоимости продукта."""
+        return self.price * self.quantity_available
 
 
-class Smartphone(Product):
-    """Подкласс для представления смартфонов."""
+class Smartphone(AbstractProduct):
+    """Класс, представляющий смартфон."""
 
     def __init__(self, name, description, price, quantity_available, performance, model, memory, color):
         super().__init__(name, description, price, quantity_available)
-        self.performance = performance  # производительность
-        self.model = model  # модель
-        self.memory = memory  # объем встроенной памяти
-        self.color = color  # цвет
+        self.performance = performance
+        self.model = model
+        self.memory = memory
+        self.color = color
 
     def __add__(self, other):
-        """Метод для операции сложения двух смартфонов."""
+        """Метод для сложения двух смартфонов."""
         if isinstance(other, self.__class__):
-            return super().__add__(other)
+            return self.calculate_total_price() + other.calculate_total_price()
         else:
             raise ValueError("Нельзя сложить смартфон с объектом другого типа.")
 
+    def get_details(self):
+        """Метод для получения деталей продукта."""
+        return f"{self.name}, {self.description}, {self.price}, {self.quantity_available}, {self.performance}, {self.model}, {self.memory}, {self.color}"
 
-class LawnGrass(Product):
-    """Подкласс для представления газонной травы."""
+    def calculate_total_price(self):
+        """Метод для вычисления общей стоимости продукта."""
+        return self.price * self.quantity_available
+
+
+class LawnGrass(AbstractProduct):
+    """Класс, представляющий газонную траву."""
 
     def __init__(self, name, description, price, quantity_available, country_of_origin, germination_period, color):
         super().__init__(name, description, price, quantity_available)
-        self.country_of_origin = country_of_origin  # страна-производитель
-        self.germination_period = germination_period  # срок прорастания
-        self.color = color  # цвет
+        self.country_of_origin = country_of_origin
+        self.germination_period = germination_period
+        self.color = color
 
     def __add__(self, other):
-        """Метод для операции сложения двух газонных трав."""
+        """Метод для сложения двух газонных трав."""
         if isinstance(other, self.__class__):
-            return super().__add__(other)
+            return self.calculate_total_price() + other.calculate_total_price()
         else:
             raise ValueError("Нельзя сложить газонную траву с объектом другого типа.")
+
+    def get_details(self):
+        """Метод для получения деталей продукта."""
+        return f"{self.name}, {self.description}, {self.price}, {self.quantity_available}, {self.country_of_origin}, {self.germination_period}, {self.color}"
+
+    def calculate_total_price(self):
+        """Метод для вычисления общей стоимости продукта."""
+        return self.price * self.quantity_available
