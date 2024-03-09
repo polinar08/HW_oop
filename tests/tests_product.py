@@ -19,6 +19,16 @@ class TestProductInitialization(unittest.TestCase):
         self.assertEqual(product.price, price)
         self.assertEqual(product.quantity_available, quantity_available)
 
+        # Проверяем, что информация о создании объекта была записана в лог
+        expected_name = "Foundation"
+        expected_description = "Evens skin tone"
+        expected_price = 20.0
+        expected_quantity = 10
+        self.assertEqual(product.name, expected_name)
+        self.assertEqual(product.description, expected_description)
+        self.assertEqual(product.price, expected_price)
+        self.assertEqual(product.quantity_available, expected_quantity)
+
 
 if __name__ == '__main__':
     unittest.main()
