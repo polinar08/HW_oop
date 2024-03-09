@@ -1,7 +1,17 @@
 from abc import ABC, abstractmethod
 
 
-class AbstractProduct(ABC):
+class LoggingMixin:
+    """Миксин для логирования информации о созданных объектах."""
+
+    def __repr__(self):
+        """Метод для вывода информации о созданном объекте."""
+        class_name = self.__class__.__name__  # Получаем название класса
+        attributes = ', '.join([f"{attr}={getattr(self, attr)}" for attr in self.__dict__])  # Получаем атрибуты объекта
+        return f"{class_name}({attributes})"
+
+
+class AbstractProduct(ABC, LoggingMixin):
     """Абстрактный базовый класс для всех классов продуктов."""
 
     def __init__(self, name, description, price, quantity_available):
