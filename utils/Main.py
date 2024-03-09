@@ -1,5 +1,5 @@
-from Category import Category
-from Product import Product
+from utils.Product import Product, Smartphone, LawnGrass
+from utils.Category import Category
 import json
 
 
@@ -14,20 +14,45 @@ def main():
     data = load_data()  # Загрузка данных
     categories = []  # Создание списка категорий
 
-    # Обработка данных и создание экземпляров классов Category и Product
+    # Обработка данных и создание экземпляров классов Category и продуктов
     for category_data in data:
         category = Category(category_data["name"], category_data["description"])
         categories.append(category)  # Добавление категории в список категорий
 
-        # Добавление товаров в категорию
+        # Добавление продуктов в категорию
         for product_data in category_data["products"]:
-            product = Product(
-                product_data["name"],
-                product_data["description"],
-                product_data["price"],
-                product_data["quantity"]
-            )
-            category.add_product(product)  # Добавление товара в категорию с помощью метода add_product()
+            if product_data['type'] == "product":
+                product = Product(
+                    product_data["name"],
+                    product_data["description"],
+                    product_data["price"],
+                    product_data["quantity"]
+                )
+            elif product_data["type"] == "smartphone":
+                product = Smartphone(
+                    product_data["name"],
+                    product_data["description"],
+                    product_data["price"],
+                    product_data["quantity"],
+                    product_data["performance"],
+                    product_data["model"],
+                    product_data["memory"],
+                    product_data["color"]
+                )
+            elif product_data["type"] == "lawn_grass":
+                product = LawnGrass(
+                    product_data["name"],
+                    product_data["description"],
+                    product_data["price"],
+                    product_data["quantity"],
+                    product_data["country_of_origin"],
+                    product_data["germination_period"],
+                    product_data["color"]
+                )
+            else:
+                raise ValueError("Unknown product type.")
+
+            category.add_product(product)  # Добавление продукта в категорию
 
     # Вывод информации о категориях и продуктах
     for category in categories:
