@@ -4,25 +4,14 @@ from abc import ABC, abstractmethod
 class PrintMixin:
     """Миксин для вывода информации о созданных объектах."""
 
-    def __init__(self, *args):
-        """Инициализация объекта и вывод информации о нем."""
-        print(repr(self))
-
     def __repr__(self):
-        """Возвращает строковое представление объекта."""
+        """Метод для представления объекта в виде строки."""
         object_attributes = ', '.join([f'{k}: {v}' for k, v in self.__dict__.items()])
         return f"создан объект со свойствами {object_attributes})"
 
 
-class AbstractProduct(ABC, PrintMixin):
+class AbstractProduct(ABC):
     """Абстрактный базовый класс для всех классов продуктов."""
-
-    def __init__(self, name, description, price, quantity_available):
-        """Инициализация абстрактного продукта."""
-        self.name = name
-        self.description = description
-        self.price = price
-        self.quantity_available = quantity_available
 
     @abstractmethod
     def __add__(self, other):
@@ -40,8 +29,15 @@ class AbstractProduct(ABC, PrintMixin):
         pass
 
 
-class Product(AbstractProduct):
+class Product(AbstractProduct, PrintMixin):
     """Класс, представляющий общий продукт."""
+
+    def __init__(self, name, description, price, quantity_available):
+        """Инициализация продукта."""
+        self.name = name
+        self.description = description
+        self.price = price
+        self.quantity_available = quantity_available
 
     def __add__(self, other):
         """Метод для сложения двух продуктов."""
@@ -59,7 +55,7 @@ class Product(AbstractProduct):
         return self.price * self.quantity_available
 
 
-class Smartphone(AbstractProduct):
+class Smartphone(Product):
     """Класс, представляющий смартфон."""
 
     def __init__(self, name, description, price, quantity_available, performance, model, memory, color):
@@ -69,24 +65,8 @@ class Smartphone(AbstractProduct):
         self.memory = memory
         self.color = color
 
-    def __add__(self, other):
-        """Метод для сложения двух смартфонов."""
-        if isinstance(other, self.__class__):
-            return self.calculate_total_price() + other.calculate_total_price()
-        else:
-            raise ValueError("Нельзя сложить смартфон с объектом другого типа.")
 
-    def get_details(self):
-        """Метод для получения деталей продукта."""
-        return (f"{self.name}, {self.description}, {self.price}, {self.quantity_available}, {self.performance}, "
-                f"{self.model}, {self.memory}, {self.color}")
-
-    def calculate_total_price(self):
-        """Метод для вычисления общей стоимости продукта."""
-        return self.price * self.quantity_available
-
-
-class LawnGrass(AbstractProduct):
+class LawnGrass(Product):
     """Класс, представляющий газонную траву."""
 
     def __init__(self, name, description, price, quantity_available, country_of_origin, germination_period, color):
@@ -94,19 +74,3 @@ class LawnGrass(AbstractProduct):
         self.country_of_origin = country_of_origin
         self.germination_period = germination_period
         self.color = color
-
-    def __add__(self, other):
-        """Метод для сложения двух газонных трав."""
-        if isinstance(other, self.__class__):
-            return self.calculate_total_price() + other.calculate_total_price()
-        else:
-            raise ValueError("Нельзя сложить газонную траву с объектом другого типа.")
-
-    def get_details(self):
-        """Метод для получения деталей продукта."""
-        return (f"{self.name}, {self.description}, {self.price}, {self.quantity_available}, {self.country_of_origin}, "
-                f"{self.germination_period}, {self.color}")
-
-    def calculate_total_price(self):
-        """Метод для вычисления общей стоимости продукта."""
-        return self.price * self.quantity_available
