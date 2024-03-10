@@ -1,17 +1,20 @@
 from abc import ABC, abstractmethod
 
 
-class LoggingMixin:
-    """Миксин для логирования информации о созданных объектах."""
+class PrintMixin:
+    """Миксин для вывода информации о созданных объектах."""
+
+    def __init__(self, *args):
+        """Инициализация объекта и вывод информации о нем."""
+        print(repr(self))
 
     def __repr__(self):
-        """Метод для вывода информации о созданном объекте."""
-        class_name = self.__class__.__name__  # Получаем название класса
-        attributes = ', '.join([f"{attr}={getattr(self, attr)}" for attr in self.__dict__])  # Получаем атрибуты объекта
-        return f"{class_name}({attributes})"
+        """Возвращает строковое представление объекта."""
+        object_attributes = ', '.join([f'{k}: {v}' for k, v in self.__dict__.items()])
+        return f"создан объект со свойствами {object_attributes})"
 
 
-class AbstractProduct(ABC, LoggingMixin):
+class AbstractProduct(ABC, PrintMixin):
     """Абстрактный базовый класс для всех классов продуктов."""
 
     def __init__(self, name, description, price, quantity_available):
@@ -75,7 +78,8 @@ class Smartphone(AbstractProduct):
 
     def get_details(self):
         """Метод для получения деталей продукта."""
-        return f"{self.name}, {self.description}, {self.price}, {self.quantity_available}, {self.performance}, {self.model}, {self.memory}, {self.color}"
+        return (f"{self.name}, {self.description}, {self.price}, {self.quantity_available}, {self.performance}, "
+                f"{self.model}, {self.memory}, {self.color}")
 
     def calculate_total_price(self):
         """Метод для вычисления общей стоимости продукта."""
@@ -100,7 +104,8 @@ class LawnGrass(AbstractProduct):
 
     def get_details(self):
         """Метод для получения деталей продукта."""
-        return f"{self.name}, {self.description}, {self.price}, {self.quantity_available}, {self.country_of_origin}, {self.germination_period}, {self.color}"
+        return (f"{self.name}, {self.description}, {self.price}, {self.quantity_available}, {self.country_of_origin}, "
+                f"{self.germination_period}, {self.color}")
 
     def calculate_total_price(self):
         """Метод для вычисления общей стоимости продукта."""
