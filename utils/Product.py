@@ -11,7 +11,7 @@ class LoggingMixin:
     def __repr__(self):
         """Возвращает строковое представление объекта."""
         object_attributes = ', '.join([f'{k}={v}' for k, v in self.__dict__.items()])
-        return f"создан объект со свойствами {object_attributes})"
+        return f"создан объект со свойствами: ({object_attributes})"
 
 
 class AbstractProduct(ABC):
@@ -31,6 +31,13 @@ class AbstractProduct(ABC):
     def calculate_total_price(self):
         """Абстрактный метод для вычисления общей стоимости продукта."""
         pass
+
+    @abstractmethod
+    def new_product(cls, product_data: dict):
+        """Абстрактный классовый метод для создания нового продукта."""
+        pass
+
+    new_product = classmethod(new_product)
 
 
 class Product(AbstractProduct, LoggingMixin):
@@ -59,6 +66,13 @@ class Product(AbstractProduct, LoggingMixin):
         """Метод для вычисления общей стоимости продукта."""
         return self.price * self.quantity_available
 
+    @classmethod
+    def new_product(cls, product_data: dict):
+        """Классовый метод для создания нового продукта."""
+        return cls(**product_data)
+
+
+# Примеры подклассов, которые могут использовать метод new_product
 
 class Smartphone(Product):
     """Класс, представляющий смартфон."""
@@ -73,12 +87,8 @@ class Smartphone(Product):
 
     def get_details(self):
         """Метод для получения деталей продукта."""
-        return (f"{self.name}, {self.description}, {self.price}, {self.quantity_available}, {self.performance}, "
-                f"{self.model}, {self.memory}, {self.color}")
-
-    def calculate_total_price(self):
-        """Метод для вычисления общей стоимости продукта."""
-        return self.price * self.quantity_available
+        return (f"{self.name}, {self.description}, {self.price}, {self.quantity_available}, {self.performance},"
+                f" {self.model}, {self.memory}, {self.color}")
 
 
 class LawnGrass(Product):
@@ -95,7 +105,3 @@ class LawnGrass(Product):
         """Метод для получения деталей продукта."""
         return (f"{self.name}, {self.description}, {self.price}, {self.quantity_available}, {self.country_of_origin}, "
                 f"{self.germination_period}, {self.color}")
-
-    def calculate_total_price(self):
-        """Метод для вычисления общей стоимости продукта."""
-        return self.price * self.quantity_available
