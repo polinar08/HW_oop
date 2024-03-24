@@ -45,6 +45,8 @@ class Product(AbstractProduct, LoggingMixin):
 
     def __init__(self, name, description, price, quantity_available):
         """Инициализация продукта."""
+        if quantity_available <= 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен.")
         super().__init__()
         self.name = name
         self.description = description
@@ -72,13 +74,14 @@ class Product(AbstractProduct, LoggingMixin):
         return cls(**product_data)
 
 
-# Примеры подклассов, которые могут использовать метод new_product
+class CategoryCalculationError(Exception):
+    """Исключение для ошибок при подсчете средней стоимости товара в категории."""
+    pass
+
+
 
 class Smartphone(Product):
-    """Класс, представляющий смартфон."""
-
     def __init__(self, name, description, price, quantity_available, performance, model, memory, color):
-        """Инициализация смартфона."""
         super().__init__(name, description, price, quantity_available)
         self.performance = performance
         self.model = model
@@ -86,22 +89,27 @@ class Smartphone(Product):
         self.color = color
 
     def get_details(self):
-        """Метод для получения деталей продукта."""
-        return (f"{self.name}, {self.description}, {self.price}, {self.quantity_available}, {self.performance},"
-                f" {self.model}, {self.memory}, {self.color}")
+        return super().get_details() + f", {self.performance}, {self.model}, {self.memory}, {self.color}"
 
 
 class LawnGrass(Product):
-    """Класс, представляющий газонную траву."""
-
     def __init__(self, name, description, price, quantity_available, country_of_origin, germination_period, color):
-        """Инициализация газонной травы."""
         super().__init__(name, description, price, quantity_available)
         self.country_of_origin = country_of_origin
         self.germination_period = germination_period
         self.color = color
 
     def get_details(self):
-        """Метод для получения деталей продукта."""
-        return (f"{self.name}, {self.description}, {self.price}, {self.quantity_available}, {self.country_of_origin}, "
-                f"{self.germination_period}, {self.color}")
+        return super().get_details() + f", {self.country_of_origin}, {self.germination_period}, {self.color}"
+
+
+def calculate_average_category_price(products):
+    try:
+        total_price = sum(product.calculate_total_price() for product in products)
+        if len(products) == 0:
+            raise CategoryCalculationError("Невозможно вычислить среднюю стоимость: категория не содержит товаров.")
+        average_price = total_price / len(products)
+    except CategoryCalculationError as e:
+        print(f"Ошибка: {e}")
+        average_price = None
+    return average_price
