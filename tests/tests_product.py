@@ -19,6 +19,9 @@ class TestProductInitialization(unittest.TestCase):
         self.assertEqual(product.price, price)
         self.assertEqual(product.quantity_available, quantity_available)
 
+        with self.assertRaises(ValueError):
+            Product("TestProduct", "Description", 100, 0)
+
         # Проверяем, что информация о создании объекта была записана в лог
         expected_name = "Foundation"
         expected_description = "Evens skin tone"
