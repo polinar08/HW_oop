@@ -1,11 +1,16 @@
 from abc import ABC, abstractmethod
 
 
-class AbstractEntity(ABC):
-    """Абстрактный базовый класс для классов Order и Category."""
+class ZeroQuantityError(Exception):
+    """Пользовательское исключение для обработки попыток добавить продукт с нулевым количеством."""
 
+    def __init__(self, message="Нельзя добавить продукт с нулевым количеством"):
+        self.message = message
+        super().__init__(self.message)
+
+
+class AbstractEntity(ABC):
     def __init__(self, name):
-        """Инициализация абстрактного объекта с именем."""
         self.name = name
         print(f"Создан объект {self.__class__.__name__} с именем '{self.name}'.")
 
@@ -16,10 +21,7 @@ class AbstractEntity(ABC):
 
 
 class Product:
-    """Класс, представляющий продукт."""
-
     def __init__(self, name, description, price, quantity_available):
-        """Инициализация продукта с названием, описанием, ценой и доступным количеством."""
         self.name = name
         self.description = description
         self.price = price
@@ -27,17 +29,13 @@ class Product:
         print(f"Создан продукт: {self}")
 
     def __str__(self):
-        """Возвращает строковое представление продукта."""
         return f"{self.name}, {self.price} руб. В наличии: {self.quantity_available} шт."
 
 
 class Category(AbstractEntity):
-    """Класс, представляющий категорию продуктов."""
-
-    total_categories = 0  # Атрибут для отслеживания общего количества категорий
+    total_categories = 0
 
     def __init__(self, name, description):
-        """Инициализация категории с названием и описанием."""
         super().__init__(name)
         self.description = description
         self.products = []
@@ -47,9 +45,22 @@ class Category(AbstractEntity):
     def add_product(self, product):
         """Добавление продукта в категорию."""
         if isinstance(product, Product):
+            if product.quantity_available <= 0:
+                raise ZeroQuantityError("Количество продукта нулевое или меньше; нельзя добавить в категорию.")
             self.products.append(product)
+            print("Продукт успешно добавлен.")
         else:
-            raise TypeError("Можно добавить только продукт.")
+            raise TypeError("Можно добавлять только экземпляры продуктов.")
+        print("Обработка добавления продукта завершена.")
+
+    def calculate_average_price(self):
+        """Расчет средней цены всех продуктов в категории."""
+        try:
+            total_price = sum([product.price for product in self.products])
+            average_price = total_price / len(self.products) if self.products else 0
+        except ZeroDivisionError:
+            return 0
+        return average_price
 
     def show_info(self):
         """Отображение информации о категории."""
@@ -60,18 +71,16 @@ class Category(AbstractEntity):
             print(product)
 
     def __str__(self):
-        """Возвращает строковое представление категории."""
         return f"{self.name}, количество продуктов: {len(self.products)} шт."
 
 
 class Order(AbstractEntity):
-    """Класс, представляющий заказ."""
-
     def __init__(self, product, quantity):
-        """Инициализация заказа с продуктом и его количеством."""
         super().__init__(product.name)
         self.product = product
         self.quantity = quantity
+        if quantity <= 0:
+            raise ZeroQuantityError("Нельзя создать заказ с количеством нулевым или меньше.")
         self.total_price = product.price * quantity
         print(f"Создан заказ: {self}")
 
@@ -82,5 +91,4 @@ class Order(AbstractEntity):
         print(f"Итоговая стоимость: {self.total_price} руб.")
 
     def __str__(self):
-        """Возвращает строковое представление заказа."""
         return f"Заказ: {self.product.name}, Количество: {self.quantity}, Итоговая стоимость: {self.total_price} руб."
